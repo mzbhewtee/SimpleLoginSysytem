@@ -1,5 +1,6 @@
-import java.awt.EventQueue;
+// Import necessary libraries
 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -11,11 +12,8 @@ import java.awt.SystemColor;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
-
 import java.awt.Font;
 import javax.swing.JButton;
-
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -100,16 +98,22 @@ public class LandingPage {
 		JButton login = new JButton("Login");
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+// 				Get the username and password inputted
 				String Username = username.getText();
 				String Password = password.getText();
 				
 				try {
+					
+// 					Connect to the database and crosscheck if the username and password matches
 					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root",
 							"");
 					PreparedStatement st = (PreparedStatement)con.prepareStatement("Select username, password from info where username=? and password=?");
 					st.setString(1, Username);
 					st.setString(2, Password);
 					ResultSet rs = st.executeQuery();
+					
+// 					If it does dispose the landing page and move to another page
 					if(rs.next()) {
 						landingPage.dispose();
 						
@@ -140,6 +144,8 @@ public class LandingPage {
 						submit.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								try {
+									
+// 									After the student inputs the grade, select the information associated with the username and password
 									Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root",
 											"");
 //									PreparedStatement st = (PreparedStatement)con.prepareStatement("Select * from info");
@@ -147,14 +153,20 @@ public class LandingPage {
 //									String query="Select * from info where username='"+username+"'and password='"+password+"'";
 									
 									
-									ResultSet rs=st.executeQuery("select * from info where username='"+Username+"'and password='"+Password+"'");									
+									ResultSet rs=st.executeQuery("select * from info where username='"+Username+"'and password='"+Password+"'");	
+									
+// 									If the task is successful check the grade for the next task
 									if(rs.next()) {
 										try{
 											String Grade = grade.getText();
-								            Integer number = Integer.valueOf(Grade); 
+								            Integer number = Integer.valueOf(Grade);
+											
+// 											If the grade inputted is negative or greater than 20, display an error message to the student
 								            if(number<0 | number>20) {
 								            	JOptionPane.showMessageDialog(null, "Invalid Input");
 								            }
+											
+// 											If the student does not meet the requirement, display an automated message designated to that particular student that they are not admitted
 								            else if(number<12 && number>0) {
 								            	String FirstName = rs.getString("fname");
 												String SecondName = rs.getString("lname");
@@ -193,16 +205,19 @@ public class LandingPage {
 												rej.getContentPane().add(lblNewLabel_4);
 												rej.setVisible(true);
 								            }
+// 											If the student meets the requiremnets, dispose the current page and redirect the student to a page with dashboard
 								            else if(number>11 && number<15) {
 								            	String Course = "Business Studies";
 								            	String FirstName = rs.getString("fname");
 												String SecondName = rs.getString("lname");
 												int ID = rs.getInt("id");
 												int year = rs.getInt("year");
+										    
+// 										    Create a roll number for the student the current year method and the automated id generator 
 												String RegNo = year+"/"+ID;
 												
 												reg.dispose();
-								            	JFrame acc = new JFrame();
+								            		JFrame acc = new JFrame();
 								        		acc.setResizable(false);
 								        		acc.getContentPane().setBackground(SystemColor.window);
 								        		acc.setBounds(100, 100, 590, 428);
@@ -225,13 +240,13 @@ public class LandingPage {
 								        		lblNewLabel_4.setBounds(383, 308, 191, 81);
 								        		acc.getContentPane().add(lblNewLabel_4);
 								        		
-
+// 											Create a menu bar that will contain the Student profile and admitted student information
 								        		JMenuBar menuBar = new JMenuBar();
 								        		menuBar.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 								        		menuBar.setBounds(0, 0, 584, 34);
 								        		acc.getContentPane().add(menuBar);
 								        		
-
+// 											in the profile section, display the student info and the department they belong
 								        		JMenu mnNewMenu_1 = new JMenu("Profile");
 								        		mnNewMenu_1.setForeground(new Color(128, 0, 0));
 								        		mnNewMenu_1.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
@@ -335,6 +350,7 @@ public class LandingPage {
 								        				re.getContentPane().add(btnNewButton);
 								        				
 								        				try {
+// 														Store the student information into their designated department according to their grade
 								    						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root",
 								    								"");
 								    						PreparedStatement ps = con.prepareStatement("insert into bs (FirstName,LastName,RegistrationNumber) values(?,?,?)");
@@ -355,6 +371,7 @@ public class LandingPage {
 								        			}
 								        		});
 								        		
+// 										    In the Programs menu, create tab for all the department
 								        		JMenu mnNewMenu = new JMenu("Programs");
 								        		mnNewMenu.setForeground(new Color(128, 0, 0));
 								        		mnNewMenu.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
@@ -364,6 +381,7 @@ public class LandingPage {
 								        		mntmNewMenuItem.addActionListener(new ActionListener() {
 								        			public void actionPerformed(ActionEvent e) {
 								        				
+// 													If the user clicked computer science, redirect them to List page/file
 								        				list ls = new list();
 								        				ls.List.setVisible(true);
 								        				
@@ -377,6 +395,7 @@ public class LandingPage {
 								        		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 								        			public void actionPerformed(ActionEvent e) {
 								        				
+// 													If the user clicked global challenges, redirect them to gc page/file
 								        				gc ls = new gc();
 								        				ls.List.setVisible(true);
 								        			}
@@ -389,6 +408,7 @@ public class LandingPage {
 								        		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 								        			public void actionPerformed(ActionEvent e) {
 								        				
+// 													If the user clicked business studies, redirect them to bs page/file
 								        				bs ls = new bs();
 								        				ls.List.setVisible(true);
 								        			}
@@ -890,10 +910,13 @@ public class LandingPage {
 		lblNewLabel_2.setBounds(181, 346, 149, 31);
 		landingPage.getContentPane().add(lblNewLabel_2);
 		
+// 		Create a sign up page
 		JLabel SignUp = new JLabel("Sign Up");
 		SignUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+// 				When the button is clicked, redirect to signup page then dispose the landing page
 				SignUp su = new SignUp();
 				su.signUp.setVisible(true);
 				landingPage.dispose();
