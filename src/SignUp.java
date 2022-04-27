@@ -125,6 +125,8 @@ public class SignUp {
 		JButton btnNewButton = new JButton("Sign Up");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+// 				Get the inputted information
 				String Fname = fname.getText();
 				String Lname = lname.getText();
 				String Username = username.getText();
@@ -133,10 +135,12 @@ public class SignUp {
 	
 				int year = LocalDate.now().getYear();
 				
-
+// 				Check if there are no empty field, if yes continue with the operation
 				if (Password.equals(CPassword) && !Fname.isEmpty() && !Lname.isEmpty() && !Password.isEmpty()
 						&& !Username.isEmpty()) {
 					try {
+						
+// 						Connect to the database, insert all the information gotten into the database
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root",
 								"");
 						PreparedStatement ps = con.prepareStatement("insert into info (username,fname,lname,password,year) values(?,?,?,?,?)");
@@ -149,6 +153,8 @@ public class SignUp {
 
 						ps.executeUpdate();
 						con.close();
+						
+// 						Empty the field afterwards
 						fname.setText("");
 						lname.setText("");
 						username.setText("");
@@ -163,6 +169,7 @@ public class SignUp {
 						JOptionPane.showMessageDialog(null, ee);
 					}
 				} else {
+// 					Display error if the user omits any field
 					JOptionPane.showMessageDialog(null, "Something went wrong, please check your inputs");
 				}
 			}
@@ -183,6 +190,8 @@ public class SignUp {
 		lblNewLabel_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+// 				Redirect to the landing page
 				LandingPage lp = new LandingPage();
 				lp.landingPage.setVisible(true);
 				signUp.dispose();
