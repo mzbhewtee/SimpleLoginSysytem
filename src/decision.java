@@ -1,3 +1,8 @@
+/**
+Create a page that the user is navigated to after they had viewed their decision
+In this page the admitted students in all courses are displayed and the logged in user will be able to see their name among the admitted student names,
+Nevertheless, the user won't see their personal information in the profile page as it will all be set to N/A and the user will be advised to check their email address
+*/
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
