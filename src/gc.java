@@ -61,6 +61,7 @@ public class gc {
 			public void windowOpened(WindowEvent e) {
 				
 				try {
+// 					Select all the information from the gc database and set it in a table
 					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root",
 							"");
 					String query = "select * from gc";
